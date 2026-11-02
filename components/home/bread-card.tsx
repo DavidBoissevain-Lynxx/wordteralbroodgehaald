@@ -1,5 +1,6 @@
 "use client";
 
+import confetti from "canvas-confetti";
 import { Sandwich } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -16,6 +17,12 @@ import { cn } from "@/lib/utils";
 // A Client Component: this runs in the browser, so it can react to clicks.
 export function BreadCard({ initialValue }: { initialValue: boolean }) {
   const { isGettingBread, toggle } = useBread(initialValue);
+
+  // Confetti when you offer to get bread, not when you cancel.
+  function handleClick() {
+    if (!isGettingBread) confetti();
+    toggle();
+  }
 
   return (
     <Card className="w-full max-w-sm gap-6 px-2 py-6 text-center shadow-sm">
@@ -46,7 +53,7 @@ export function BreadCard({ initialValue }: { initialValue: boolean }) {
           variant={isGettingBread ? "outline" : "default"}
           size="lg"
           className="w-full cursor-pointer"
-          onClick={toggle}
+          onClick={handleClick}
         >
           {isGettingBread ? "Toch niet" : "Ik haal brood!"}
         </Button>
