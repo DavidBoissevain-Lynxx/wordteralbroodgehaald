@@ -18,15 +18,6 @@ npm run dev
 
 Open [http://localhost:3000](http://localhost:3000) in two browser windows and click the button in one of them.
 
-## The two pages
-
-| URL | What you see | File |
-| --- | --- | --- |
-| [/](http://localhost:3000) | A plain version with the default shadcn/ui look | [app/page.tsx](app/page.tsx) |
-| [/mariokart](http://localhost:3000/mariokart) | The same app with a Mario Kart style button | [app/mariokart/page.tsx](app/mariokart/page.tsx) |
-
-In Next.js, every folder in `app` with a `page.tsx` becomes a URL. Components live in a folder named after their page. Both pages use the same database and the same logic, so a click on one page also changes the other.
-
 ## The code to read
 
 | File | What it does | Runs on |
@@ -37,8 +28,6 @@ In Next.js, every folder in `app` with a `page.tsx` becomes a URL. Components li
 | [app/api/bread/route.ts](app/api/bread/route.ts) | The API: saves a click in the database | The server |
 | [lib/supabase.ts](lib/supabase.ts) | The connection to the database | Both |
 | [supabase/schema.sql](supabase/schema.sql) | The table and who may do what | The database |
-
-The Mario Kart looks are in [components/mariokart](components/mariokart). You don't need to read those to understand the app.
 
 ## What happens when you click
 

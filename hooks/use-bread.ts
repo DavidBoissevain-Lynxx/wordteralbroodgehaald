@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 
 import { supabase } from "@/lib/supabase";
 
-// The logic both pages share: remember the status, listen for changes, save clicks.
+// The logic of the button: remember the status, listen for changes, save clicks.
 export function useBread(initialValue: boolean) {
   const [isGettingBread, setIsGettingBread] = useState(initialValue);
 
