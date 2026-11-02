@@ -72,9 +72,9 @@ function EnergyWaves() {
       className="pointer-events-none absolute -inset-x-[7%] -inset-y-[38%] motion-reduce:hidden"
       aria-hidden
     >
-      {/* Two swirls, the second one mirrored so it turns the other way. */}
-      <div className="energy-swirl absolute inset-0 animate-energy" />
-      <div className="energy-swirl absolute inset-0 -scale-x-100 animate-energy [animation-delay:60ms]" />
+      <div className="absolute inset-x-[12%] inset-y-[22%] animate-energy blur-lg">
+        <div className="hexagon size-full bg-linear-to-b from-yellow-200 to-lime-300" />
+      </div>
 
       <svg
         viewBox="0 0 1200 600"

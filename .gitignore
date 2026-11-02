@@ -34,6 +34,9 @@ yarn-error.log*
 .env*
 !.env.example
 
+# reference videos
+/public/*.mp4
+
 # vercel
 .vercel
 
