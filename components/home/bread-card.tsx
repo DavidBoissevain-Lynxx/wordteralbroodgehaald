@@ -19,7 +19,7 @@ export function BreadCard({ initialValue }:
     initialValue: boolean
   }
 ) {
-  
+
   const { isGettingBread, toggle } = useBread(initialValue);
 
   // Confetti when you offer to get bread, not when you cancel.
@@ -46,7 +46,7 @@ export function BreadCard({ initialValue }:
         <CardDescription
           className={isGettingBread ? "text-base text-green-600" : "text-base"}
         >
-          {isGettingBread ? "Ja, iemand is onderweg" : "Nee, nog niet"}
+          {isGettingBread ? "Ja, iemand is onderweg!" : "Nee, nog niet :("}
         </CardDescription>
       </CardHeader>
 
