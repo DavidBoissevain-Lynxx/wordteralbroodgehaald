@@ -1,36 +1,39 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Wordt er al brood gehaald?
 
-## Getting Started
+A full-stack example for beginners. Everyone sees one big button: red **NEE**, or green **JA!** when a colleague is getting the bread.
 
-First, run the development server:
+Built with Next.js, Supabase, Tailwind CSS and shadcn/ui.
+
+## Run it yourself
+
+1. Create a project on [supabase.com](https://supabase.com).
+2. Open the **SQL Editor**, paste in [supabase/schema.sql](supabase/schema.sql) and press **Run**.
+3. Copy `.env.example` to `.env.local` and fill in your project URL and publishable key. You find both under **Connect** in the Supabase dashboard.
+4. Start the app:
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) in two browser windows and click the button in one of them.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## The code to read
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| File | What it does | Runs on |
+| --- | --- | --- |
+| [app/page.tsx](app/page.tsx) | Reads the status from the database | The server |
+| [components/bread-button.tsx](components/bread-button.tsx) | Remembers the status, handles clicks and hears changes | The browser |
+| [lib/supabase.ts](lib/supabase.ts) | The connection to the database | Both |
+| [supabase/schema.sql](supabase/schema.sql) | The table and who may do what | The database |
 
-## Learn More
+The looks are in [components/fancy-button.tsx](components/fancy-button.tsx) and [components/fancy-button.css](components/fancy-button.css). You don't need to read those to understand the app.
 
-To learn more about Next.js, take a look at the following resources:
+## What happens when you click
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+1. **You click:** `handleClick` in [bread-button.tsx](components/bread-button.tsx) calls `setIsGettingBread`, and React redraws the button straight away.
+2. **It is saved:** the same function updates the row in the database.
+3. **Everyone hears it:** Supabase announces the change, and the `useEffect` in each open browser calls `setIsGettingBread` with the new value.
+4. **Someone opens the page later:** [page.tsx](app/page.tsx) reads the value on the server and passes it to the button as a prop.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Every night a scheduled job in the database sets the button back to Nee.

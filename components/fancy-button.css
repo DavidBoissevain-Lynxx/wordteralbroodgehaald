@@ -1,0 +1,103 @@
+/* Cuts an element into the shape of the button. */
+@utility hexagon {
+  clip-path: polygon(8% 0, 92% 0, 100% 50%, 92% 100%, 8% 100%, 0 50%);
+}
+
+/* The blue page background with a faint race flag pattern. */
+@utility bg-checkered {
+  background-color: #1d4e9e;
+  background-image:
+    linear-gradient(to bottom, rgb(30 90 180 / 0.6), rgb(8 23 61 / 0.95)),
+    conic-gradient(rgb(255 255 255 / 0.2) 25%, transparent 0 50%, rgb(255 255 255 / 0.2) 0 75%, transparent 0);
+  background-size: auto, 96px 96px;
+}
+
+/* Dark letters with a gold band. Moving this wide background slides the band across. */
+@utility text-shine {
+  background-image: linear-gradient(105deg, #0d3b1e 38%, #a7d98a 50%, #0d3b1e 62%);
+  background-size: 300% 100%;
+  background-position: 0% 0;
+  background-clip: text;
+  color: transparent;
+}
+
+/* A number the browser may animate. It turns the colours in energy-swirl. */
+@property --swirl {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+
+/* Beams of coloured light. The blur turns them into soft, glowing streaks. */
+@utility energy-swirl {
+  background: conic-gradient(
+    from var(--swirl),
+    transparent 4%,
+    rgb(190 242 100 / 0.7) 9%,
+    transparent 14% 22%,
+    rgb(253 224 71 / 0.8) 27%,
+    transparent 32% 46%,
+    rgb(251 146 60 / 0.7) 50%,
+    transparent 55% 62%,
+    rgb(190 242 100 / 0.7) 67%,
+    transparent 72% 80%,
+    rgb(253 224 71 / 0.8) 85%,
+    transparent 90%
+  );
+  border-radius: 50%;
+  filter: blur(8px);
+}
+
+/* Each --animate-* line creates a Tailwind class, like animate-energy.
+   Timings and strength are measured from the Mario Kart button: over in about half a second. */
+@theme {
+  --animate-activate: jolt 0.13s linear, glow 0.25s ease-out;
+  --animate-chevron-out: chevron-out 0.35s ease-out both;
+  --animate-energy: energy 0.45s ease-out both;
+  --animate-shine: shine 0.45s ease-out both;
+  --animate-trail: trail 0.3s ease-out both;
+  --animate-twinkle: twinkle 0.45s ease-out both;
+
+  /* One sharp push to the side, and then it settles right away. */
+  @keyframes jolt {
+    0% { transform: translateX(-1.5%) skewX(-2deg); }
+    40% { transform: translateX(-0.5%) skewX(-1deg); }
+    70% { transform: translateX(0.2%); }
+    100% { transform: none; }
+  }
+
+  /* The button lights up for a moment. */
+  @keyframes glow {
+    from { filter: brightness(1.12) drop-shadow(0 0 8px rgb(253 224 71 / 0.5)); }
+    to { filter: brightness(1) drop-shadow(0 0 0 rgb(253 224 71 / 0)); }
+  }
+
+  @keyframes chevron-out {
+    0%, 55% { opacity: 1; }
+    100% { opacity: 0; }
+  }
+
+  /* The light swirls around the button while it grows outwards and fades. */
+  @keyframes energy {
+    0% { opacity: 0; --swirl: 0deg; transform: scale(0.96); }
+    35% { opacity: 0.32; }
+    100% { opacity: 0; --swirl: 70deg; transform: scale(1.02, 1.06); }
+  }
+
+  @keyframes shine {
+    from { background-position: 100% 0; }
+    to { background-position: 0% 0; }
+  }
+
+  @keyframes trail {
+    0%, 100% { opacity: 0; }
+    35% { opacity: 1; }
+  }
+
+  /* A speck flares up once and drifts upwards. */
+  @keyframes twinkle {
+    0% { opacity: 0; transform: scale(0); }
+    30% { opacity: 1; transform: scale(1); }
+    100% { opacity: 0; transform: translateY(-6px) scale(0.5); }
+  }
+}
