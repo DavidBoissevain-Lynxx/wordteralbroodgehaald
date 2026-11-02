@@ -43,7 +43,7 @@ export function FancyButton({
       </div>
 
       <p className="min-h-8 text-xl font-medium text-shadow-md sm:text-2xl" aria-live="polite">
-        {isOn ? "Een collega haalt het brood" : "Nog niemand onderweg. Ga jij?"}
+        {isOn ? "Iemand is onderweg" : "Klik als jij het brood gaat halen"}
       </p>
     </>
   );

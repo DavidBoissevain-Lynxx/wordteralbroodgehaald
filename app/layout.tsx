@@ -1,11 +1,10 @@
 import type { Metadata } from "next";
-import { Exo_2 } from "next/font/google";
+import { Geist } from "next/font/google";
 import "./globals.css";
 
-const exo = Exo_2({
-  variable: "--font-exo",
+const geist = Geist({
+  variable: "--font-geist-sans",
   subsets: ["latin"],
-  style: ["normal", "italic"],
 });
 
 export const metadata: Metadata = {
@@ -15,7 +14,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="nl" className={`${exo.variable} h-full antialiased`}>
+    <html lang="nl" className={`${geist.variable} h-full antialiased`}>
       <body className="min-h-full">{children}</body>
     </html>
   );

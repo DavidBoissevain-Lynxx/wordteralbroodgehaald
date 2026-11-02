@@ -1,12 +1,9 @@
-"use client";
-
 import { useEffect, useState } from "react";
 
-import { FancyButton } from "@/components/fancy-button";
 import { supabase } from "@/lib/supabase";
 
-// A Client Component: this runs in the browser, so it can react to clicks.
-export function BreadButton({ initialValue }: { initialValue: boolean }) {
+// The logic both pages share: remember the status, listen for changes, save clicks.
+export function useBread(initialValue: boolean) {
   const [isGettingBread, setIsGettingBread] = useState(initialValue);
 
   // When a colleague clicks, the database tells us and we update the button.
@@ -26,10 +23,10 @@ export function BreadButton({ initialValue }: { initialValue: boolean }) {
   }, []);
 
   // When you click, the button changes right away and the database is updated.
-  async function handleClick() {
+  async function toggle() {
     setIsGettingBread(!isGettingBread);
     await supabase.from("bread").update({ is_getting_bread: !isGettingBread }).eq("id", 1);
   }
 
-  return <FancyButton isOn={isGettingBread} onClick={handleClick} />;
+  return { isGettingBread, toggle };
 }
