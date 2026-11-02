@@ -33,7 +33,8 @@ In Next.js, every folder in `app` with a `page.tsx` becomes a URL. Components li
 | --- | --- | --- |
 | [app/page.tsx](app/page.tsx) | Reads the status from the database | The server |
 | [components/home/bread-card.tsx](components/home/bread-card.tsx) | Shows the status and the button | The browser |
-| [hooks/use-bread.ts](hooks/use-bread.ts) | Remembers the status, saves clicks and hears changes | The browser |
+| [hooks/use-bread.ts](hooks/use-bread.ts) | Remembers the status, sends clicks to the API and hears changes | The browser |
+| [app/api/bread/route.ts](app/api/bread/route.ts) | The API: saves a click in the database | The server |
 | [lib/supabase.ts](lib/supabase.ts) | The connection to the database | Both |
 | [supabase/schema.sql](supabase/schema.sql) | The table and who may do what | The database |
 
@@ -42,7 +43,7 @@ The Mario Kart looks are in [components/mariokart](components/mariokart). You do
 ## What happens when you click
 
 1. **You click:** `toggle` in [use-bread.ts](hooks/use-bread.ts) calls `setIsGettingBread`, and React redraws the button straight away.
-2. **It is saved:** the same function updates the row in the database.
+2. **It is saved:** the same function sends a request to [the API](app/api/bread/route.ts), and the API updates the row in the database on the server.
 3. **Everyone hears it:** Supabase announces the change, and the `useEffect` in each open browser calls `setIsGettingBread` with the new value.
 4. **Someone opens the page later:** [page.tsx](app/page.tsx) reads the value on the server and passes it to the component as a prop.
 

@@ -22,10 +22,13 @@ export function useBread(initialValue: boolean) {
     };
   }, []);
 
-  // When you click, the button changes right away and the database is updated.
+  // When you click, the button changes right away and the API saves the new status.
   async function toggle() {
     setIsGettingBread(!isGettingBread);
-    await supabase.from("bread").update({ is_getting_bread: !isGettingBread }).eq("id", 1);
+    await fetch("/api/bread", {
+      method: "POST",
+      body: JSON.stringify({ isGettingBread: !isGettingBread }),
+    });
   }
 
   return { isGettingBread, toggle };
