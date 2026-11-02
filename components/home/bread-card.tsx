@@ -2,6 +2,7 @@
 
 import confetti from "canvas-confetti";
 import { Sandwich } from "lucide-react";
+import { useEffect, useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -11,7 +12,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { useBread } from "@/hooks/use-bread";
+import { supabase } from "@/lib/supabase";
 
 // A Client Component: this runs in the browser, so it can react to clicks.
 export function BreadCard({ initialValue }:
@@ -20,12 +21,34 @@ export function BreadCard({ initialValue }:
   }
 ) {
 
-  const { isGettingBread, toggle } = useBread(initialValue);
+  const [isGettingBread, setIsGettingBread] = useState(initialValue);
 
-  // Confetti when you offer to get bread, not when you cancel.
-  function handleClick() {
+  // When a colleague clicks, the database tells us and we update the button.
+  useEffect(() => {
+    const channel = supabase
+      .channel("bread")
+      .on(
+        "postgres_changes",
+        { event: "UPDATE", schema: "public", table: "bread" },
+        (change) => setIsGettingBread(change.new.is_getting_bread),
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, []);
+
+  // When you click, the button changes right away and the API saves the new status.
+  async function toggle() {
+    // Confetti when you offer to get bread, not when you cancel.
     if (!isGettingBread) confetti();
-    toggle();
+
+    setIsGettingBread(!isGettingBread);
+    await fetch("/api/bread", {
+      method: "POST",
+      body: JSON.stringify({ isGettingBread: !isGettingBread }),
+    });
   }
 
   return (
@@ -55,7 +78,7 @@ export function BreadCard({ initialValue }:
           variant={isGettingBread ? "outline" : "default"}
           size="lg"
           className="w-full cursor-pointer"
-          onClick={handleClick}
+          onClick={toggle}
         >
           {isGettingBread ? "Toch niet" : "Ik haal brood!"}
         </Button>

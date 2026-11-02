@@ -23,15 +23,17 @@ Open [http://localhost:3000](http://localhost:3000) in two browser windows and c
 | File | What it does | Runs on |
 | --- | --- | --- |
 | [app/page.tsx](app/page.tsx) | Reads the status from the database | The server |
-| [components/home/bread-card.tsx](components/home/bread-card.tsx) | Shows the status and the button | The browser |
-| [hooks/use-bread.ts](hooks/use-bread.ts) | Remembers the status, sends clicks to the API and hears changes | The browser |
+| [components/home/bread-card.tsx](components/home/bread-card.tsx) | Shows the status and the button, sends clicks to the API and hears changes | The browser |
 | [app/api/bread/route.ts](app/api/bread/route.ts) | The API: saves a click in the database | The server |
+| [app/info/page.tsx](app/info/page.tsx) | A nonsense second page, with all its code in one file | The server |
 | [lib/supabase.ts](lib/supabase.ts) | The connection to the database | Both |
 | [supabase/schema.sql](supabase/schema.sql) | The table and who may do what | The database |
 
+In Next.js, every folder in `app` with a `page.tsx` becomes a URL, so `app/info/page.tsx` is the page at [/info](http://localhost:3000/info).
+
 ## What happens when you click
 
-1. **You click:** `toggle` in [use-bread.ts](hooks/use-bread.ts) calls `setIsGettingBread`, and React redraws the button straight away.
+1. **You click:** `toggle` in [bread-card.tsx](components/home/bread-card.tsx) calls `setIsGettingBread`, and React redraws the button straight away.
 2. **It is saved:** the same function sends a request to [the API](app/api/bread/route.ts), and the API updates the row in the database on the server.
 3. **Everyone hears it:** Supabase announces the change, and the `useEffect` in each open browser calls `setIsGettingBread` with the new value.
 4. **Someone opens the page later:** [page.tsx](app/page.tsx) reads the value on the server and passes it to the component as a prop.
